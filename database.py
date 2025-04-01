@@ -8,7 +8,7 @@ class Database:
         self.connection = sqlite3.connect(db_name)
         self.cursor = self.connection.cursor()
         self._create_table()
-        self.add_codes_from_csv("codes.csv")
+        #self.add_codes_from_csv("codes.csv")
 
     def _create_table(self):
         """Create a table with columns id and code if it doesn't already exist."""
