@@ -21,4 +21,8 @@ async def check_code(code: str):
         return {"message": f"True"}
     else:
         return {"message": f"False"}
+    
 
+@app.get("/rewrite_db")
+async def rewrite_db():
+    db.add_codes_from_csv("codes.csv")
