@@ -23,9 +23,9 @@ async def check_code(code: str):
         return {"message": f"False"}
     
 # multi-use codes
-@app.get("/code-multi/{code}")
-async def check_code_event(code: str):
-    if db.is_code_valid(code):
+@app.get("/code-multi/{code}/{user_id}")
+async def check_code_event(code: str, user_id):
+    if db.is_code_valid(code, user_id):
         return {"message": f"True"}
     else:
         return {"message": f"False"}
