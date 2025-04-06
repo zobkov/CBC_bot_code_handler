@@ -25,10 +25,13 @@ async def check_code(code: str):
 # multi-use codes
 @app.get("/code-multi/{code}/{user_id}")
 async def check_code_event(code: str, user_id):
-    if db.is_code_valid(code, user_id):
-        return {"message": f"True"}
+    validation_result = db.is_code_valid(code, user_id)
+    if validation_result == "valid":
+        return {"message": "Valid"}
+    elif validation_result == "expired":
+        return {"message": "Expired"}
     else:
-        return {"message": f"False"}
+        return {"message": "Invalid"}
 
 @app.get("/rewrite_db")
 async def rewrite_db():

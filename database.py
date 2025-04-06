@@ -83,16 +83,18 @@ class Database:
         if result:
             start_time = datetime.strptime(result[0], "%Y-%m-%d %H:%M:%S")
             current_time = datetime.now()
-            if current_time <= start_time + timedelta(minutes=15):
+            if current_time > start_time + timedelta(minutes=15):
+                return "expired"
+            elif current_time <= start_time + timedelta(minutes=15):
                 # Check if the user has already validated this code
                 self.cursor.execute("SELECT 1 FROM user_validations WHERE user_id = ? AND code = ?", (user_id, code))
                 if self.cursor.fetchone() is None:
                     # The code is valid and the user has not validated it yet
                     self.cursor.execute("INSERT INTO user_validations (user_id, code) VALUES (?, ?)", (user_id, code))
                     self.connection.commit()
-                    return True
-        return False
-
+                    return "valid"
+        return "invalid"
+    
     def add_timed_codes_from_csv(self, csv_file_path):
         """Overwrite all existing timed codes and add new ones from a CSV file."""
         # Clear the timed_entries table
